@@ -29,8 +29,12 @@ def register_views(app):
     @app.route("/login", defaults={"path": ""}, methods=["GET"])
     @app.route("/login/<path:path>", methods=["GET"])
     def login_static(path):
+        is_ws = request.headers.get("Upgrade") == "websocket"
+        is_ws = is_ws or request.url.startswith("ws")
+        is_ws = is_ws or "websocket" in request.url
+
         # in Debug mode proxy to CLIENT_DEV_SERVER_URL
-        if os.environ.get("FLASK_ENV") == "development":
+        if os.environ.get("FLASK_ENV") == "development" and not is_ws:
             # Dev mode requires trailing slash
             if path == "" and not request.url.endswith("/"):
                 request.url = request.url + "/"
