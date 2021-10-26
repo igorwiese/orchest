@@ -40,14 +40,17 @@ const useLocationQuery = (
   });
 };
 
+// TODO: https://github.com/DefinitelyTyped/DefinitelyTyped/issues/50526
+type CustomHistory = ReturnType<typeof useHistory>;
+
 const useHistoryListener = <T>({
   forward,
   backward,
   onPush,
 }: {
-  forward?: (history) => void;
-  backward?: (history) => void;
-  onPush?: (history) => void;
+  forward?: (history: CustomHistory) => void;
+  backward?: (history: CustomHistory) => void;
+  onPush?: (history: CustomHistory) => void;
 }) => {
   const history = useHistory<T>();
   const locationKeysRef = React.useRef([]);
@@ -73,7 +76,7 @@ const useHistoryListener = <T>({
       }
     });
     return removeListener;
-  }, []);
+  });
 };
 
 // these are common use cases that are all over the place

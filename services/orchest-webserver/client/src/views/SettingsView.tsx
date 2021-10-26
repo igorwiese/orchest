@@ -266,7 +266,7 @@ const SettingsView: React.FC = () => {
     getConfig();
     getHostInfo();
     getVersion();
-  }, []);
+  });
 
   return (
     <Layout>
@@ -501,7 +501,9 @@ const SettingsView: React.FC = () => {
               }
             })()}
             <p className="push-up">
-              Orchest's current status is <i>{state.status}</i>.
+              {`Orchest's current status is `}
+              <i>{state.status}</i>
+              {`.`}
             </p>
           </div>
           <div className="clear"></div>
