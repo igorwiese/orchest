@@ -477,7 +477,7 @@ const PipelineView: React.FC = () => {
       // If session doesn't exist and first load
       if (shouldAutoStart && !session) {
         dispatch({
-          type: "sessionToggle",
+          type: "sessionUuidSet",
           payload: { pipelineUuid, projectUuid },
         });
         setShouldAutoStart(false);

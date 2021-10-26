@@ -36,7 +36,7 @@ const SessionToggleButton = React.forwardRef<
   const handleEvent = (e) => {
     e.preventDefault();
     dispatch({
-      type: "sessionToggle",
+      type: "sessionUuidSet",
       payload: { pipelineUuid, projectUuid },
     });
   };

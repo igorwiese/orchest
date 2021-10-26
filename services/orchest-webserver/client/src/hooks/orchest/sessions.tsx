@@ -3,7 +3,7 @@ import type { IOrchestSession, IOrchestSessionUuid } from "@/types";
 import React from "react";
 import { fetcher } from "@/utils/fetcher";
 import { isSession } from "./utils";
-import pascalcase from "pascalcase";
+import pascalCase from "pascalcase";
 import { useOrchest } from "./context";
 import useSWR from "swr";
 
@@ -18,7 +18,7 @@ const convertKeyToCamelCase = <T extends unknown>(data: T, keys?: string[]) => {
   if (!data) return data;
   if (keys) {
     for (const key of keys) {
-      data[lowerCaseFirstLetter(pascalcase(key))] = data[key];
+      data[lowerCaseFirstLetter(pascalCase(key))] = data[key];
     }
     return data as T;
   }
@@ -26,15 +26,13 @@ const convertKeyToCamelCase = <T extends unknown>(data: T, keys?: string[]) => {
     const [key, value] = curr;
     return {
       ...newData,
-      [lowerCaseFirstLetter(pascalcase(key))]: value,
+      [lowerCaseFirstLetter(pascalCase(key))]: value,
     };
   }, {}) as T;
 };
 
 /* Matchers
   =========================================== */
-
-const isLaunchable = (status: TSessionStatus) => !status;
 
 const isStoppable = (status: TSessionStatus) =>
   ["RUNNING", "LAUNCHING"].includes(status);
@@ -109,12 +107,12 @@ export const OrchestSessionsProvider: React.FC = ({ children }) => {
     const foundSession =
       isLoaded &&
       data?.sessions?.find((dataSession) =>
-        isSession(dataSession, state?._sessionsToggle)
+        isSession(dataSession, state?._sessionUuid)
       );
 
     // no cashed session from useSWR, nor previous session in the memory
-    if (!foundSession && !state._sessionsToggle) {
-      dispatch({ type: "_sessionsToggleClear" });
+    if (!foundSession && !state._sessionUuid) {
+      dispatch({ type: "_sessionUuidClear" });
       return;
     }
 
@@ -122,7 +120,7 @@ export const OrchestSessionsProvider: React.FC = ({ children }) => {
     const session = convertKeyToCamelCase<IOrchestSession>(foundSession, [
       "project_uuid",
       "pipeline_uuid",
-    ]) || { ...state._sessionsToggle, status: null };
+    ]) || { ...state._sessionUuid, status: null };
 
     /**
      * Any session-specific cache mutations must be made with this helper to
@@ -173,7 +171,7 @@ export const OrchestSessionsProvider: React.FC = ({ children }) => {
           console.error(err);
         });
 
-      dispatch({ type: "_sessionsToggleClear" });
+      dispatch({ type: "_sessionUuidClear" });
       return;
     }
 
@@ -194,7 +192,7 @@ export const OrchestSessionsProvider: React.FC = ({ children }) => {
             ".",
         ],
       });
-      dispatch({ type: "_sessionsToggleClear" });
+      dispatch({ type: "_sessionUuidClear" });
       return;
     }
 
@@ -209,12 +207,12 @@ export const OrchestSessionsProvider: React.FC = ({ children }) => {
         .catch((err) => {
           console.error(err);
         });
-      dispatch({ type: "_sessionsToggleClear" });
+      dispatch({ type: "_sessionUuidClear" });
       return;
     }
 
-    dispatch({ type: "_sessionsToggleClear" });
-  }, [state._sessionsToggle]);
+    dispatch({ type: "_sessionUuidClear" });
+  }, [state._sessionUuid]);
 
   /**
    * DELETE ALL

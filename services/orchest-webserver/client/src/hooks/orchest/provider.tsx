@@ -38,10 +38,10 @@ const reducer = (state: IOrchestState, action: TOrchestAction) => {
       return { ...state, projectUuid: action.payload };
     case "projectsSet":
       return { ...state, projects: action.payload, hasLoadedProjects: true };
-    case "sessionToggle":
-      return { ...state, _sessionsToggle: action.payload };
-    case "_sessionsToggleClear":
-      return { ...state, _sessionsToggle: null };
+    case "sessionUuidSet":
+      return { ...state, _sessionUuid: action.payload };
+    case "_sessionUuidClear":
+      return { ...state, _sessionUuid: null };
     case "_sessionsSet":
       return { ...state, ...action.payload };
     case "_sessionsPollingStart":
@@ -77,7 +77,7 @@ const initialState: IOrchestState = {
   sessionsKillAllInProgress: false,
   unsavedChanges: false,
   _sessionsToFetch: [],
-  _sessionsToggle: null,
+  _sessionUuid: null,
   drawerIsOpen: true,
 };
 

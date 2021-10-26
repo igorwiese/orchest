@@ -82,7 +82,7 @@ export interface IOrchestState
   user_config: IOrchestUserConfig;
   unsavedChanges: boolean;
   _sessionsToFetch?: IOrchestSessionUuid[] | [];
-  _sessionsToggle?: IOrchestSessionUuid;
+  _sessionUuid?: IOrchestSessionUuid;
   _sessionsIsPolling?: boolean;
 }
 
@@ -114,11 +114,11 @@ export type TOrchestAction =
     }
   | { type: "drawerToggle" }
   | {
-      type: "sessionToggle";
+      type: "sessionUuidSet";
       payload: IOrchestSessionUuid;
     }
   | { type: "setUnsavedChanges"; payload: IOrchestState["unsavedChanges"] }
-  | { type: "_sessionsToggleClear" }
+  | { type: "_sessionUuidClear" }
   | {
       type: "_sessionsSet";
       payload: Pick<IOrchestState, "sessions" | "sessionsIsLoading">;

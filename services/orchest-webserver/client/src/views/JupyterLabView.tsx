@@ -65,7 +65,7 @@ const JupyterLabView: React.FC = () => {
       (typeof session === "undefined" || !session?.status)
     ) {
       dispatch({
-        type: "sessionToggle",
+        type: "sessionUuidSet",
         payload: { pipelineUuid, projectUuid },
       });
     }
