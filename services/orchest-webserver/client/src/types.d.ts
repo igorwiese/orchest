@@ -1,5 +1,10 @@
 import React from "react";
-import { TStatus } from "./components/Status";
+
+export type FetchError = {
+  code?: number;
+  message: string;
+  body?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+};
 
 export interface IOrchestConfig {
   CLOUD: boolean;
