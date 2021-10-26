@@ -1,11 +1,10 @@
 import type { IOrchestSession, IOrchestSessionUuid } from "@/types";
-
-import React from "react";
 import { fetcher } from "@/utils/fetcher";
-import { isSession } from "./utils";
 import pascalCase from "pascalcase";
-import { useOrchest } from "./context";
+import React from "react";
 import useSWR from "swr";
+import { useOrchest } from "./context";
+import { isSession } from "./utils";
 
 type TSessionStatus = IOrchestSession["status"];
 
@@ -48,13 +47,8 @@ const stopSession = ({ pipelineUuid, projectUuid }: IOrchestSessionUuid) =>
     method: "DELETE",
   });
 
-/* Provider
-  =========================================== */
-
-export const OrchestSessionsProvider: React.FC = ({ children }) => {
+export const useOrchestSessions = () => {
   const { state, dispatch } = useOrchest();
-
-  const { _sessionsIsPolling } = state;
 
   /**
    * Use SWR to fetch and cache the data from our sessions endpoint
@@ -69,7 +63,7 @@ export const OrchestSessionsProvider: React.FC = ({ children }) => {
     })[];
     status: TSessionStatus;
   }>(ENDPOINT, fetcher, {
-    refreshInterval: _sessionsIsPolling ? 1000 : 0,
+    refreshInterval: 1000,
   });
 
   const isLoading = !data && !error;
@@ -258,32 +252,4 @@ export const OrchestSessionsProvider: React.FC = ({ children }) => {
         });
       });
   }, [state.sessionsKillAllInProgress]);
-
-  return <React.Fragment>{children}</React.Fragment>;
-};
-
-/* Consumer
-  =========================================== */
-
-/**
- * OrchestSessionsConsumer
- *
- * In an ideal scenario, we'd just use the SWR hook directly to only trigger
- * polling where it's used. Unfortunately, that's not an option until all of our
- * codebase has moved away from class-based components.
- *
- * In the meantime, we'll wrap this Component around session-dependent views or
- * components to explicitly trigger polling.
- */
-export const OrchestSessionsConsumer: React.FC = ({ children }) => {
-  const { dispatch } = useOrchest();
-
-  React.useEffect(() => {
-    dispatch({ type: "_sessionsPollingStart" });
-    return () => {
-      dispatch({ type: "_sessionsPollingClear" });
-    };
-  }, []);
-
-  return <React.Fragment>{children}</React.Fragment>;
 };

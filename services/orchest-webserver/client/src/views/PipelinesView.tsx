@@ -1,21 +1,19 @@
-import React from "react";
-
-import { OrchestSessionsConsumer } from "@/hooks/orchest";
 import { Layout } from "@/components/Layout";
 import PipelineList from "@/components/PipelineList";
 import ProjectBasedView from "@/components/ProjectBasedView";
+import { useOrchestSessions } from "@/hooks/orchest/sessions";
 import { useCustomRoute } from "@/hooks/useCustomRoute";
+import React from "react";
 
 const PipelinesView: React.FC = () => {
   const { projectUuid } = useCustomRoute();
+  useOrchestSessions();
   return (
-    <OrchestSessionsConsumer>
-      <Layout>
-        <ProjectBasedView projectUuid={projectUuid}>
-          <PipelineList projectUuid={projectUuid} key={projectUuid} />
-        </ProjectBasedView>
-      </Layout>
-    </OrchestSessionsConsumer>
+    <Layout>
+      <ProjectBasedView projectUuid={projectUuid}>
+        <PipelineList projectUuid={projectUuid} key={projectUuid} />
+      </ProjectBasedView>
+    </Layout>
   );
 };
 

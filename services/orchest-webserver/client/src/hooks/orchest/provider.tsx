@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import type {
   IOrchestConfig,
   IOrchestGet,
@@ -7,12 +5,11 @@ import type {
   IOrchestUserConfig,
   TOrchestAction,
 } from "@/types";
-import { isCurrentSession, isSession } from "./utils";
-
-import { OrchestContext } from "./context";
-import { OrchestSessionsProvider } from "./sessions";
-import { useLocalStorage } from "../local-storage";
 import { uuidv4 } from "@orchest/lib-utils";
+import React from "react";
+import { useLocalStorage } from "../local-storage";
+import { OrchestContext } from "./context";
+import { isCurrentSession, isSession } from "./utils";
 
 const reducer = (state: IOrchestState, action: TOrchestAction) => {
   switch (action.type) {
@@ -44,10 +41,6 @@ const reducer = (state: IOrchestState, action: TOrchestAction) => {
       return { ...state, _sessionUuid: null };
     case "_sessionsSet":
       return { ...state, ...action.payload };
-    case "_sessionsPollingStart":
-      return { ...state, _sessionsIsPolling: true };
-    case "_sessionsPollingClear":
-      return { ...state, _sessionsIsPolling: false };
     case "sessionsKillAll":
       return { ...state, sessionsKillAllInProgress: true };
     case "_sessionsKillAllClear":
@@ -159,7 +152,7 @@ export const OrchestProvider: React.FC<IOrchestProviderProps> = ({
         get,
       }}
     >
-      <OrchestSessionsProvider>{children}</OrchestSessionsProvider>
+      {children}
     </OrchestContext.Provider>
   );
 };

@@ -1,21 +1,19 @@
-import "codemirror/mode/shell/shell";
-
-import * as React from "react";
-
-import { MDCButtonReact, MDCLinearProgressReact } from "@orchest/lib-mdc";
-import { OrchestSessionsConsumer, useOrchest } from "@/hooks/orchest";
-import {
-  PromiseManager,
-  makeCancelable,
-  makeRequest,
-  uuidv4,
-} from "@orchest/lib-utils";
-
-import { Controlled as CodeMirror } from "react-codemirror2";
 import ImageBuildLog from "@/components/ImageBuildLog";
 import { Layout } from "@/components/Layout";
-import { siteMap } from "@/routingConfig";
+import { useOrchest } from "@/hooks/orchest";
+import { useOrchestSessions } from "@/hooks/orchest/sessions";
 import { useSendAnalyticEvent } from "@/hooks/useSendAnalyticEvent";
+import { siteMap } from "@/routingConfig";
+import { MDCButtonReact, MDCLinearProgressReact } from "@orchest/lib-mdc";
+import {
+  makeCancelable,
+  makeRequest,
+  PromiseManager,
+  uuidv4,
+} from "@orchest/lib-utils";
+import "codemirror/mode/shell/shell";
+import * as React from "react";
+import { Controlled as CodeMirror } from "react-codemirror2";
 
 const CANCELABLE_STATUSES = ["PENDING", "STARTED"];
 
@@ -23,6 +21,7 @@ const ConfigureJupyterLabView: React.FC = () => {
   // global
   const { orchest } = window;
   const context = useOrchest();
+  useOrchestSessions();
 
   useSendAnalyticEvent("view load", { name: siteMap.configureJupyterLab.path });
 
@@ -233,119 +232,116 @@ const ConfigureJupyterLabView: React.FC = () => {
   ]);
 
   return (
-    <OrchestSessionsConsumer>
-      <Layout>
-        <div className={"view-page jupyterlab-config-page"}>
-          {state.jupyterSetupScript !== undefined ? (
-            <>
-              <h2>Configure JupyterLab</h2>
-              <p className="push-down">
-                You can install JupyterLab extensions using the bash script
-                below.
-              </p>
-              <p className="push-down">
-                For example, you can install the Jupyterlab Code Formatter
-                extension by executing{" "}
-                <span className="code">
-                  pip install jupyterlab_code_formatter
-                </span>
-                .
-              </p>
+    <Layout>
+      <div className={"view-page jupyterlab-config-page"}>
+        {state.jupyterSetupScript !== undefined ? (
+          <>
+            <h2>Configure JupyterLab</h2>
+            <p className="push-down">
+              You can install JupyterLab extensions using the bash script below.
+            </p>
+            <p className="push-down">
+              {`For example, you can install the Jupyterlab Code Formatter
+              extension by executing `}
+              <span className="code">
+                pip install jupyterlab_code_formatter
+              </span>
+              .
+            </p>
 
-              <p className="push-down">
-                In addition, you can configure the JupyterLab environment to
-                include settings such as your <span className="code">git</span>{" "}
-                username and email.
-                <br />
-                <br />
-                <span className="code">
-                  git config --global user.name "John Doe"
-                </span>
-                <br />
-                <span className="code">
-                  git config --global user.email "john@example.org"
-                </span>
-              </p>
+            <p className="push-down">
+              In addition, you can configure the JupyterLab environment to
+              include settings such as your <span className="code">git</span>{" "}
+              username and email.
+              <br />
+              <br />
+              <span className="code">
+                {`git config --global user.name "John Doe"`}
+              </span>
+              <br />
+              <span className="code">
+                {`git config --global user.email "john@example.org"`}
+              </span>
+            </p>
 
-              <div className="push-down">
-                <CodeMirror
-                  value={state.jupyterSetupScript}
-                  options={{
-                    mode: "application/x-sh",
-                    theme: "jupyter",
-                    lineNumbers: true,
-                    viewportMargin: Infinity,
-                  }}
-                  onBeforeChange={(editor, data, value) => {
-                    setState((prevState) => ({
-                      ...prevState,
-                      jupyterSetupScript: value,
-                    }));
-                    context.dispatch({
-                      type: "setUnsavedChanges",
-                      payload: true,
-                    });
-                  }}
-                />
-              </div>
-
-              <ImageBuildLog
-                buildFetchHash={state.buildFetchHash}
-                buildRequestEndpoint={
-                  "/catch/api-proxy/api/jupyter-builds/most-recent"
-                }
-                buildsKey="jupyter_builds"
-                socketIONamespace={
-                  context.state?.config
-                    .ORCHEST_SOCKETIO_JUPYTER_BUILDING_NAMESPACE
-                }
-                streamIdentity={"jupyter"}
-                onUpdateBuild={onUpdateBuild}
-                onBuildStart={onBuildStart}
-                ignoreIncomingLogs={state.ignoreIncomingLogs}
-                build={state.jupyterBuild}
-                building={state.building}
+            <div className="push-down">
+              <CodeMirror
+                value={state.jupyterSetupScript}
+                options={{
+                  mode: "application/x-sh",
+                  theme: "jupyter",
+                  lineNumbers: true,
+                  viewportMargin: Infinity,
+                }}
+                onBeforeChange={(editor, data, value) => {
+                  setState((prevState) => ({
+                    ...prevState,
+                    jupyterSetupScript: value,
+                  }));
+                  context.dispatch({
+                    type: "setUnsavedChanges",
+                    payload: true,
+                  });
+                }}
               />
+            </div>
 
+            <ImageBuildLog
+              buildFetchHash={state.buildFetchHash}
+              buildRequestEndpoint={
+                "/catch/api-proxy/api/jupyter-builds/most-recent"
+              }
+              buildsKey="jupyter_builds"
+              socketIONamespace={
+                context.state?.config
+                  .ORCHEST_SOCKETIO_JUPYTER_BUILDING_NAMESPACE
+              }
+              streamIdentity={"jupyter"}
+              onUpdateBuild={onUpdateBuild}
+              onBuildStart={onBuildStart}
+              ignoreIncomingLogs={state.ignoreIncomingLogs}
+              build={state.jupyterBuild}
+              building={state.building}
+            />
+
+            <MDCButtonReact
+              label={context.state.unsavedChanges ? "Save*" : "Save"}
+              icon="save"
+              classNames={[
+                "mdc-button--raised",
+                "themed-secondary",
+                "push-right",
+              ]}
+              submitButton
+              onClick={() => save(undefined)}
+            />
+
+            {!state.building ? (
               <MDCButtonReact
-                label={context.state.unsavedChanges ? "Save*" : "Save"}
-                icon="save"
-                classNames={[
-                  "mdc-button--raised",
-                  "themed-secondary",
-                  "push-right",
-                ]}
-                submitButton
-                onClick={() => save(undefined)}
+                label="Build"
+                disabled={
+                  state.buildRequestInProgress ||
+                  typeof state.sessionKillStatus !== "undefined"
+                }
+                icon="memory"
+                classNames={["mdc-button--raised"]}
+                onClick={buildImage}
               />
-
-              {!state.building ? (
-                <MDCButtonReact
-                  label="Build"
-                  disabled={
-                    state.buildRequestInProgress ||
-                    typeof state.sessionKillStatus !== "undefined"
-                  }
-                  icon="memory"
-                  classNames={["mdc-button--raised"]}
-                  onClick={buildImage}
-                />
-              ) : (
-                <MDCButtonReact
-                  label="Cancel build"
-                  disabled={state.cancelBuildRequestInProgress}
-                  icon="close"
-                  classNames={["mdc-button--raised"]}
-                  onClick={cancelImageBuild}
-                />
-              )}
-            </>
-          ) : (
-            <MDCLinearProgressReact />
-          )}
-        </div>
-      </Layout>
-    </OrchestSessionsConsumer>
+            ) : (
+              <MDCButtonReact
+                label="Cancel build"
+                disabled={state.cancelBuildRequestInProgress}
+                icon="close"
+                classNames={["mdc-button--raised"]}
+                onClick={cancelImageBuild}
+              />
+            )}
+          </>
+        ) : (
+          <MDCLinearProgressReact />
+        )}
+      </div>
+    </Layout>
   );
 };
 

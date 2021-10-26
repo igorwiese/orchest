@@ -1,20 +1,19 @@
-import { OrchestSessionsConsumer, useOrchest } from "@/hooks/orchest";
+import { Layout } from "@/components/Layout";
+import { useOrchest } from "@/hooks/orchest";
+import { useOrchestSessions } from "@/hooks/orchest/sessions";
+import { useInterval } from "@/hooks/use-interval";
+import { useCustomRoute } from "@/hooks/useCustomRoute";
+import { siteMap } from "@/Routes";
+import type { TViewPropsWithRequiredQueryArgs } from "@/types";
+import { checkGate, getPipelineJSONEndpoint } from "@/utils/webserver-utils";
+import { MDCLinearProgressReact } from "@orchest/lib-mdc";
 import {
-  PromiseManager,
   collapseDoubleDots,
   makeCancelable,
   makeRequest,
+  PromiseManager,
 } from "@orchest/lib-utils";
-
-import { Layout } from "@/components/Layout";
-import { MDCLinearProgressReact } from "@orchest/lib-mdc";
 import React from "react";
-import type { TViewPropsWithRequiredQueryArgs } from "@/types";
-import { checkGate } from "@/utils/webserver-utils";
-import { getPipelineJSONEndpoint } from "@/utils/webserver-utils";
-import { siteMap } from "@/Routes";
-import { useCustomRoute } from "@/hooks/useCustomRoute";
-import { useInterval } from "@/hooks/use-interval";
 
 export type IJupyterLabViewProps = TViewPropsWithRequiredQueryArgs<
   "pipeline_uuid" | "project_uuid"
@@ -23,6 +22,7 @@ export type IJupyterLabViewProps = TViewPropsWithRequiredQueryArgs<
 const JupyterLabView: React.FC = () => {
   // global states
   const { state, dispatch, get } = useOrchest();
+  useOrchestSessions();
 
   // data from route
   const { navigateTo, projectUuid, pipelineUuid } = useCustomRoute();
@@ -210,18 +210,16 @@ const JupyterLabView: React.FC = () => {
   };
 
   return (
-    <OrchestSessionsConsumer>
-      <Layout>
-        <div className="view-page jupyter no-padding">
-          <div className="lab-loader">
-            <div>
-              <h2>Setting up JupyterLab…</h2>
-              <MDCLinearProgressReact />
-            </div>
+    <Layout>
+      <div className="view-page jupyter no-padding">
+        <div className="lab-loader">
+          <div>
+            <h2>Setting up JupyterLab…</h2>
+            <MDCLinearProgressReact />
           </div>
         </div>
-      </Layout>
-    </OrchestSessionsConsumer>
+      </div>
+    </Layout>
   );
 };
 

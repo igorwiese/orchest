@@ -1,27 +1,27 @@
-import {
-  MDCButtonReact,
-  MDCDrawerReact,
-  MDCLinearProgressReact,
-} from "@orchest/lib-mdc";
-import { OrchestSessionsConsumer, useOrchest } from "@/hooks/orchest";
+import { Layout } from "@/components/Layout";
+import { useOrchest } from "@/hooks/orchest";
+import { useOrchestSessions } from "@/hooks/orchest/sessions";
+import { useCustomRoute } from "@/hooks/useCustomRoute";
+import LogViewer from "@/pipeline-view/LogViewer";
+import { siteMap } from "@/Routes";
 import type { PipelineJson, TViewPropsWithRequiredQueryArgs } from "@/types";
-import {
-  PromiseManager,
-  makeCancelable,
-  makeRequest,
-} from "@orchest/lib-utils";
 import {
   createOutgoingConnections,
   filterServices,
   getPipelineJSONEndpoint,
 } from "@/utils/webserver-utils";
-
-import { Layout } from "@/components/Layout";
-import LogViewer from "@/pipeline-view/LogViewer";
+import {
+  MDCButtonReact,
+  MDCDrawerReact,
+  MDCLinearProgressReact,
+} from "@orchest/lib-mdc";
+import {
+  makeCancelable,
+  makeRequest,
+  PromiseManager,
+} from "@orchest/lib-utils";
 import React from "react";
 import io from "socket.io-client";
-import { siteMap } from "@/Routes";
-import { useCustomRoute } from "@/hooks/useCustomRoute";
 
 export type ILogsViewProps = TViewPropsWithRequiredQueryArgs<
   "pipeline_uuid" | "project_uuid"
@@ -30,6 +30,7 @@ export type ILogsViewProps = TViewPropsWithRequiredQueryArgs<
 const LogsView: React.FC = () => {
   // global states
   const { dispatch, get } = useOrchest();
+  useOrchestSessions();
 
   // data from route
   const {
@@ -378,11 +379,9 @@ const LogsView: React.FC = () => {
   }
 
   return (
-    <OrchestSessionsConsumer>
-      <Layout>
-        <div className="view-page no-padding logs-view">{rootView}</div>
-      </Layout>
-    </OrchestSessionsConsumer>
+    <Layout>
+      <div className="view-page no-padding logs-view">{rootView}</div>
+    </Layout>
   );
 };
 

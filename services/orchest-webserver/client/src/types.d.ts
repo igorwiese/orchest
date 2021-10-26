@@ -83,7 +83,6 @@ export interface IOrchestState
   unsavedChanges: boolean;
   _sessionsToFetch?: IOrchestSessionUuid[] | [];
   _sessionUuid?: IOrchestSessionUuid;
-  _sessionsIsPolling?: boolean;
 }
 
 export type TOrchestAction =
