@@ -518,13 +518,13 @@ const ProjectsView: React.FC = () => {
                     onClick={onImport}
                     data-test-id="import-project"
                   />
-                  <MDCButtonReact
-                    classNames={["mdc-button--raised"]}
-                    icon="lightbulb"
-                    label="Explore Examples"
-                    onClick={goToExamples}
-                    data-test-id="explore-examples"
-                  />
+                   <MDCButtonReact
+                  //  classNames={["mdc-button--raised"]}
+                  //  icon="lightbulb"
+                  //  label="Explore Examples"
+                  //  onClick={goToExamples}
+                  //  data-test-id="explore-examples"
+                   />
                 </div>
                 <div className={"pipeline-actions push-down"}>
                   <MDCIconButtonToggleReact
