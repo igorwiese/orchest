@@ -52,14 +52,14 @@ export default class Login extends React.Component {
         {this.props.cloud && (
           <div className="cloud-login-helper">
             <div className="text-holder">
-              <img src="image/logo-white.png" width="200px" />
-              <h1>You have been added to a private Orchest instance</h1>
+              <img src="image/logo.png" width="200px" />
+              <h1>You have been added to a private Dtw Analytics instance</h1>
               <p>
                 You can login with the username and password provided by the
                 instance owner.
               </p>
               <p>
-                To access the Orchest Cloud dashboard please{" "}
+                To access the Dtw Analytics dashboard please{" "}
                 <a href={this.props.cloudURL}>login here</a>.
               </p>
             </div>
@@ -72,7 +72,7 @@ export default class Login extends React.Component {
                 <h2>
                   Login to your
                   <br />
-                  Orchest Instance
+                  Dtw Analytics Instance
                 </h2>
               ) : (
                 <img src="image/logo.png" width="200px" className="logo" />
@@ -108,23 +108,6 @@ export default class Login extends React.Component {
                   }
                 })()}
               </form>
-            </div>
-            <div className="utility-links">
-              <a
-                target="_blank"
-                href={this.props.documentationURL}
-                rel="noreferrer"
-              >
-                Documentation
-              </a>
-              <span> - </span>
-              <a target="_blank" href={this.props.githubURL} rel="noreferrer">
-                GitHub
-              </a>
-              <span> - </span>
-              <a target="_blank" href={this.props.videosURL} rel="noreferrer">
-                Video tutorials
-              </a>
             </div>
           </div>
         </div>
