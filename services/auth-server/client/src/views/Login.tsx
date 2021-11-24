@@ -52,7 +52,7 @@ export default class Login extends React.Component {
         {this.props.cloud && (
           <div className="cloud-login-helper">
             <div className="text-holder">
-              <img src="image/logo.png" width="200px" />
+              <img src="image/logo.png" width="300px" />
               <h1>You have been added to a private Dtw Analytics instance</h1>
               <p>
                 You can login with the username and password provided by the
