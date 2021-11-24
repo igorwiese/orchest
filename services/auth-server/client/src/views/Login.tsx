@@ -75,7 +75,7 @@ export default class Login extends React.Component {
                   Dtw Analytics Instance
                 </h2>
               ) : (
-                <img src="image/logo.png" width="300px" className="logo" />
+                <img src="image/logo.png" width="450px" className="logo" />
               )}
               <form method="post" onSubmit={this.submitLogin.bind(this)}>
                 <MDCTextFieldReact
