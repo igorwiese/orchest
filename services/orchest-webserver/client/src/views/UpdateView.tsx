@@ -27,7 +27,7 @@ const UpdateView: React.FC = () => {
   const startUpdateTrigger = () => {
     orchest.confirm(
       "Warning",
-      "Are you sure you want to update Orchest? This will kill all active sessions and ongoing runs.",
+      "Are you sure you want to update Dtw Analytics? This will kill all active sessions and ongoing runs.",
       () => {
         setState({
           updating: true,

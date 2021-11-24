@@ -45,11 +45,11 @@ const App = () => {
 
   React.useEffect(() => {
     if (config.FLASK_ENV === "development") {
-      console.log("Orchest is running with --dev.");
+      console.log("Dtw Analytics is running with --dev.");
     }
 
     if (config.CLOUD === true) {
-      console.log("Orchest is running with --cloud.");
+      console.log("Dtw Analytics is running with --cloud.");
 
       boot({
         email: user_config.INTERCOM_USER_EMAIL,

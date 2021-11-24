@@ -208,7 +208,7 @@ const SettingsView: React.FC = () => {
   const restartOrchest = () => {
     orchest.confirm(
       "Warning",
-      "Are you sure you want to restart Orchest? This will kill all running Orchest containers (including kernels/pipelines).",
+      "Are you sure you want to restart Dtw Analyticss? This will kill all running Dtw Analytics containers (including kernels/pipelines).",
       () => {
         setState((prevState) => ({
           ...prevState,
@@ -260,7 +260,7 @@ const SettingsView: React.FC = () => {
   return (
     <Layout>
       <div className={"view-page orchest-settings"}>
-        <h2>Orchest settings</h2>
+        <h2>Dtw Analytics settings</h2>
         <div className="push-down">
           <div>
             {(() => {
@@ -335,7 +335,7 @@ const SettingsView: React.FC = () => {
                         return (
                           <div className="warning push-up">
                             <i className="material-icons">info</i> Restart
-                            Orchest for the changes to {vals} to take effect.
+                            Dtw Analytics for the changes to {vals} to take effect.
                           </div>
                         );
                       }
@@ -442,7 +442,7 @@ const SettingsView: React.FC = () => {
         <h3>Updates</h3>
         <div className="columns">
           <div className="column">
-            <p>Update Orchest from the web UI using the built in updater.</p>
+            <p>Update Dtw Analytics from the web UI using the built in updater.</p>
           </div>
           <div className="column">
             <MDCButtonReact
@@ -459,7 +459,7 @@ const SettingsView: React.FC = () => {
         <div className="columns">
           <div className="column">
             <p>
-              Restart Orchest will force quit ongoing builds, jobs and sessions.
+              Restart Dtw Analytics will force quit ongoing builds, jobs and sessions.
             </p>
           </div>
           <div className="column">
@@ -497,7 +497,7 @@ const SettingsView: React.FC = () => {
         <h3>Authentication</h3>
         <div className="columns">
           <div className="column">
-            <p>Manage Orchest users using the user admin panel.</p>
+            <p>Manage Dtw Analytics users using the user admin panel.</p>
           </div>
           <div className="column">
             <MDCButtonReact
