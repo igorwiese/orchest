@@ -30,7 +30,7 @@ export const ONBOARDING_DIALOG_CAROUSEL_MIN_HEIGHT = "16rem";
 export const onboardingDialogCarouselSlides: TOnboardingDialogCarouselSlide[] = [
   {
     variant: "icons",
-    title: "Discover Orchest",
+    title: "Discover Dtw Analytics",
     description: "Find out more about the core concepts.",
     icons: [
       { icon: "device_hub", label: "Pipelines" },
