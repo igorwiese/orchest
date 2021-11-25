@@ -61,12 +61,12 @@
             "binds": {
                 "/project-dir": "/home/coder/code-server"
             },
-            "command": "-c 'umask 002 && code-server --auth none --bind-addr 0.0.0.0:8081 /home/coder/code-server'",
+            "command": "-c 'umask 002 && code-server --auth none --bind-addr 0.0.0.0:8080 /home/coder/code-server'",
             "entrypoint": "bash",
             "image": "codercom/code-server:latest",
             "name": "vscode",
             "ports": [
-                8081
+                8080
             ],
             "scope": [
                 "interactive"
